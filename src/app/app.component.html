@@ -1,0 +1,108 @@
+<!--The content below is only a placeholder and can be replaced. col-md-offset-1 -->
+<!--<div class="card text-center" style="width: 100%; min-height: 50px;">-->
+<!--  <div class="card-body">-->
+<!--    <h5 class="card-title">firstname</h5>-->
+<!--    <p class="card-text">addressline</p>-->
+<!--    <p class="card-text">telnumber</p>-->
+<!--  </div>-->
+<!--</div>-->
+
+<div class="unwrap">
+  <div class="bg-cover" style="background-image: url(assets/img/profile-bg.png); height: 170px">
+    <div class="p-4 text-center text-white">
+<!--      <img class="img-thumbnail rounded-circle thumb128" src="assets/img/user/09.jpg" alt="Image" />-->
+      <h3 class="m-0">NAME: {{firstname}}</h3>
+      <p>ADDRESSLINE: {{addressline}}</p>
+      <p>TELNUMBER: {{telnumber}}</p>
+    </div>
+  </div>
+  <div style="background: #7ac142; height: 30px" class="text-center p-3 mb-4">
+  </div>
+
+  <div *ngIf="showLoadingIndicator" class="spinner"></div>
+
+<ngb-tabset >
+<!--  type="pills"-->
+  <!--  tab starts-->
+  <ngb-tab >
+    <ng-template ngbTabTitle>Facilities <span class="badge badge-warning">{{facilities || 0}}</span></ng-template>
+    <ng-template ngbTabContent>
+      <app-facilities></app-facilities>
+    </ng-template>
+  </ngb-tab>
+
+
+  <ngb-tab >
+    <ng-template ngbTabTitle>Background </ng-template>
+    <ng-template ngbTabContent>
+      <app-background></app-background>
+    </ng-template>
+  </ngb-tab>
+
+
+
+  <ngb-tab >
+    <ng-template ngbTabTitle>Problem Definition </ng-template>
+    <ng-template ngbTabContent>
+      <app-problemdefinition></app-problemdefinition>
+    </ng-template>
+  </ngb-tab>
+
+
+  <ngb-tab >
+    <ng-template ngbTabTitle>SWOT </ng-template>
+    <ng-template ngbTabContent>
+      <app-swot></app-swot>
+    </ng-template>
+  </ngb-tab>
+
+
+  <ngb-tab >
+    <ng-template ngbTabTitle>Ability to pay </ng-template>
+    <ng-template ngbTabContent>
+      <app-abilitytopay></app-abilitytopay>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab>
+    <ng-template ngbTabTitle><b>Customer proposal </b></ng-template>
+    <ng-template ngbTabContent>
+       <app-customerproposal></app-customerproposal>
+    </ng-template>
+  </ngb-tab>
+
+
+  <ngb-tab>
+    <ng-template ngbTabTitle><b>Payment plan </b></ng-template>
+    <ng-template ngbTabContent>
+       <app-paymentplan></app-paymentplan>
+    </ng-template>
+  </ngb-tab>
+
+
+  <ngb-tab>
+    <ng-template ngbTabTitle><b>Remedial offerings </b></ng-template>
+    <ng-template ngbTabContent>
+      <app-remedialofferings></app-remedialofferings>
+    </ng-template>
+  </ngb-tab>
+
+
+  <ngb-tab>
+    <ng-template ngbTabTitle><b>Actions </b></ng-template>
+    <ng-template ngbTabContent>
+      <app-actions></app-actions>
+    </ng-template>
+  </ngb-tab>
+
+
+</ngb-tabset>
+
+
+
+
+
+
+
+
+
+</div>

@@ -1,0 +1,215 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Actions agreed</h3>
+  </div>
+  <div class="panel-body" style="height:800px">
+    <div class="row">
+    <div class="col-sm-8">
+      <form #initiationForm="ngForm" (ngSubmit)="onSubmitInitiation(initiationForm)">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Proposal Received</label>
+          <div class="col-sm-2">
+            Initiation Date
+            <input type="text" class="form-control" id="initiationdateProposal" name="initiationdateProposal" [disabled]="initiation"
+                   bsDatepicker [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" placement="right" #initiationdateProposal="ngModel"
+                   [(ngModel)]="model.initiationdateProposal" required/>
+            <div class="validation-error" *ngIf="initiationdateProposal.invalid && initiationdateProposal.touched">required</div>
+          </div>
+          <div class="col-sm-2">
+            Next Review
+            <input type="text" class="form-control form_date" id="reviewProposal" name="reviewProposal" [disabled]="initiation" bsDatepicker
+                   [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" placement="right" #reviewProposal="ngModel"
+                   [(ngModel)]="model.reviewProposal" required/>
+            <div class="validation-error" *ngIf="reviewProposal.invalid && reviewProposal.touched">required</div>
+          </div>
+          <div class="col-sm-4">
+            Remark:
+            <textarea class="form-control" rows="2" id="remarkproposalremark" name="remarkproposalremark" [disabled]="initiation" #remarkproposalremark="ngModel"
+                      [(ngModel)]="model.remarkproposalremark" required></textarea>
+            <div class="validation-error" *ngIf="remarkproposalremark.invalid && remarkproposalremark.touched">required</div>
+          </div>
+          <div class="col-sm-2">
+            Completed:
+            <select class="form-control" id="inititationcompleted" name="inititationcompleted" [disabled]="initiation" #inititationcompleted="ngModel"
+                    [(ngModel)]="model.inititationcompleted" required>
+              <option>No-Action</option>
+              <option>Declined</option>
+              <option>Internal-approval-sort</option>
+            </select>
+            <div class="validation-error" *ngIf="inititationcompleted.invalid && inititationcompleted.touched">required</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-2">
+            <button [disabled]="!initiationForm.valid || !initiationForm.dirty" class="btn btn-sm btn-info" type="submit">
+              <i class="fa fa-save"></i> submit proposal
+            </button>
+          </div>
+        </div>
+      </form>
+      <form #internalapprovalForm="ngForm" (ngSubmit)="onSubmitInternalapproval(internalapprovalForm)" >
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Internal approval</label>
+          <div class="col-sm-2">
+            Initiation Date
+            <input type="text" class="form-control" id="initiationdateapprovalsort" name="initiationdateapprovalsort" [disabled]="internalapproval"
+                   bsDatepicker [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" placement="right" #initiationdateapprovalsort="ngModel"
+                   [(ngModel)]="model.initiationdateapprovalsort" required/>
+            <div class="validation-error" *ngIf="initiationdateapprovalsort.invalid && initiationdateapprovalsort.touched">Initiation Date is required</div>
+          </div>
+          <div class="col-sm-2">
+            Next Review
+            <input type="text" class="form-control form_date" id="reviewedinternalApprovalSort" name="reviewedinternalApprovalSort" [disabled]="internalapproval"
+                   bsDatepicker [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" placement="right" #reviewedinternalApprovalSort="ngModel"
+                   [(ngModel)]="model.reviewedinternalApprovalSort" required/>
+            <div class="validation-error" *ngIf="reviewedinternalApprovalSort.invalid && reviewedinternalApprovalSort.touched">Next Review is required</div>
+          </div>
+          <div class="col-sm-4">
+            Remarks:
+            <textarea class="form-control" rows="2" id="remarkapprovalsought" name="remarkapprovalsought" [disabled]="internalapproval" #remarkapprovalsought="ngModel"
+                      [(ngModel)]="model.remarkapprovalsought" required></textarea>
+            <div class="validation-error" *ngIf="remarkapprovalsought.invalid && remarkapprovalsought.touched">Remarks is required</div>
+          </div>
+          <div class="col-sm-2">
+            Completed:
+            <select id="actioncompletedapprovalsought" name="actioncompletedapprovalsought" [disabled]="internalapproval" class="form-control" #actioncompletedapprovalsought="ngModel"
+                    [(ngModel)]="model.actioncompletedapprovalsought" required>
+              <option>No-Action</option>
+              <option>Declined</option>
+              <option>Approved</option>
+            </select>
+            <div class="validation-error" *ngIf="actioncompletedapprovalsought.invalid && actioncompletedapprovalsought.touched">Completed is required</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-2">
+            <button [disabled]="!internalapprovalForm.valid || !internalapprovalForm.dirty" class="btn btn-sm btn-info" type="submit">
+              <i class="fa fa-save"></i> Submit internal approval
+            </button>
+          </div>
+        </div>
+      </form>
+      <form #custacceptForm="ngForm" (ngSubmit)="onSubmitCustaccept(custacceptForm)">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Customer Accepted</label>
+          <div class="col-sm-2">
+            Initiation Date
+            <input type="text" class="form-control" id="initiationdatecustomeraccepted" name="initiationdatecustomeraccepted" [disabled]="custaccept"
+                   bsDatepicker [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" placement="right" #initiationdatecustomeraccepted="ngModel"
+                   [(ngModel)]="model.initiationdatecustomeraccepted" required/>
+            <div class="validation-error" *ngIf="initiationdatecustomeraccepted.invalid && initiationdatecustomeraccepted.touched">required</div>
+          </div>
+          <div class="col-sm-2">
+            Next Review
+            <input type="text" class="form-control" id="reviewedinternalcustomeraccepted" name="reviewedinternalcustomeraccepted" [disabled]="custaccept"
+                   bsDatepicker [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" placement="right" #reviewedinternalcustomeraccepted="ngModel"
+                   [(ngModel)]="model.reviewedinternalcustomeraccepted" required/>
+            <div class="validation-error" *ngIf="reviewedinternalcustomeraccepted.invalid && reviewedinternalcustomeraccepted.touched">required</div>
+          </div>
+          <div class="col-sm-4">
+            Remarks:
+            <textarea class="form-control" rows="2" id="remarkcustomeraccepted" name="remarkcustomeraccepted" [disabled]="custaccept" #remarkcustomeraccepted="ngModel"
+                      [(ngModel)]="model.remarkcustomeraccepted" required></textarea>
+            <div class="validation-error" *ngIf="remarkcustomeraccepted.invalid && remarkcustomeraccepted.touched">required</div>
+          </div>
+          <div class="col-sm-2">
+            Completed:
+            <select id="action_completed_customeraccepted" name="action_completed_customeraccepted" [disabled]="custaccept" class="form-control" #action_completed_customeraccepted="ngModel"
+                    [(ngModel)]="model.action_completed_customeraccepted" required>
+              <option value="Accepted">Accepted</option>
+              <option value="Declined">Declined</option>
+            </select>
+            <div class="validation-error" *ngIf="action_completed_customeraccepted.invalid && action_completed_customeraccepted.touched">required</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-2">
+            <button [disabled]="!custacceptForm.valid || !custacceptForm.dirty" class="btn btn-sm btn-info" type="submit" >
+              <i class="fa fa-save"></i> Submit customer acceptance
+            </button>
+          </div>
+        </div>
+      </form>
+      <form #cureForm="ngForm" (ngSubmit)="onSubmitCure(cureForm)">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Cure implemented</label>
+          <div class="col-sm-2">
+            Initiation Date
+            <input type="text" class="form-control" id="initiationdatecure" name="initiationdatecure" bsDatepicker [minDate]="minDate" [disabled]="cure"
+                   [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" placement="right" #initiationdatecure="ngModel"
+                   [(ngModel)]="model.initiationdatecure" required/>
+            <div class="validation-error" *ngIf="initiationdatecure.invalid && initiationdatecure.touched">Remarks is required</div>
+          </div>
+          <div class="col-sm-2">
+            Next Review
+            <input type="text" class="form-control" id="reviewedcure" name="reviewedcure" bsDatepicker [minDate]="minDate" [disabled]="cure"
+                   [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" placement="right" #reviewedcure="ngModel"
+                   [(ngModel)]="model.reviewedcure" required/>
+            <div class="validation-error" *ngIf="reviewedcure.invalid && reviewedcure.touched">Next Review is required</div>
+          </div>
+          <div class="col-sm-4">
+            Remarks:
+            <textarea class="form-control" rows="2" id="remarkcure" name="remarkcure" #remarkcure="ngModel" [disabled]="cure"
+                      [(ngModel)]="model.remarkcure" required></textarea>
+            <div class="validation-error" *ngIf="remarkcure.invalid && remarkcure.touched">Remarks is required</div>
+          </div>
+          <div class="col-sm-2">
+            Completed:
+            <select id="action_completed_cure" name="action_completed_cure" class="form-control" #action_completed_cure="ngModel" [disabled]="cure"
+                    [(ngModel)]="model.action_completed_cure" required>
+              <option value="N">No</option>
+              <option value="Y">Yes</option>
+            </select>
+            <div class="validation-error" *ngIf="action_completed_cure.invalid && action_completed_cure.touched">Completed is required</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-2">
+            <button [disabled]="!cureForm.valid || !cureForm.dirty" class="btn btn-sm btn-info" type="submit">
+              <i class="fa fa-save"></i> Submit cure
+            </button>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <input type="file" name="photo" ng2FileSelect [uploader]="uploader" />
+      <label>Doc desc</label>
+      <textarea class="form-control" rows="2" id="docdesc" name="docdesc" ([ngModel])="docdesccomment" #docdesccomment></textarea>
+      <button type="button" class="btn btn-success btn-sm" (click)="upload(docdesccomment.value)" [disabled]="!uploader.getNotUploadedItems().length">
+        <i class="fa fa-upload"></i> Upload a file
+      </button>
+    </div>
+    <div class="col-sm-4">
+
+      <ngb-tabset>
+        <ngb-tab>
+          <ng-template  ngbTabTitle>Uploaded files <span class="badge badge-warning">{{actionfileslength || 0}}</span>
+            <table class="table table-sm table-hover">
+              <tr *ngFor="let f of actionfiles">
+                <td>{{f.FILENAME}}</td>
+                <td>
+                  {{f.DOCDESC}}
+                  <p>
+                    <small>by: {{f.COLOFFICER}}</small>
+                  </p>
+                </td>
+                <td>{{f.STAGEDATE | date}}</td>
+                <td>
+                  <button class="btn btn-success btn-sm" (click)="downloadFile(f.FILENAME, f.DESTPATH)">
+                    <i class="fa fa-download"></i>
+                  </button>
+                </td>
+              </tr>
+            </table>
+
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+    </div>
+  </div>
+</div>
+</div>

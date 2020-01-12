@@ -1,0 +1,64 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Ability to pay</h3>
+  </div>
+  <div class="panel-body" style="height:500px">
+    <div class="row">
+    <div class="col-sm-6">
+      <form #remedialofferingsForm="ngForm" (ngSubmit)="onSubmit(remedialofferingsForm)">
+        <div class="form-group col-md-12">
+          <label for="remedialofferings"></label>
+          <select id="remedialofferings" class="form-control" name="remedialofferings" id="remedialofferings" #remedialofferings="ngModel"
+                  [(ngModel)]="model.remedialofferings" (change)="onChange($event.target.value)" required>
+            <option>Private Treaty Sale</option>
+            <option>Debt discount/Full & Final Settlement</option>
+            <option>Rescheduling</option>
+            <option>Interest concessions</option>
+            <option>Insurance claims</option>
+            <option>Out of court settlements</option>
+            <option>Foreclosure</option>
+            <option>Lumpsum payment</option>
+            <option>Public sale below the reserve</option>
+            <option>Top Ups</option>
+            <option>Exit Relationship / take over</option>
+            <option>Write off</option>
+            <option>Restructure</option>
+            <option>Refinancing</option>
+            <option>Other</option>
+          </select>
+          <div class="validation-error" *ngIf="remedialofferings.invalid && remedialofferings.touched">ability to pay is required</div>
+        </div>
+        <!---->
+        <div class="form-row">
+          <button [disabled]="!remedialofferingsForm.valid || !remedialofferings.dirty || mydisable" class="mr-1 btn btn-success btn-block"
+                  type="submit">
+            <i class="fa fa-save"></i> Submit</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-6">
+
+      <ngb-tabset>
+        <ngb-tab>
+          <ng-template  ngbTabTitle> History <span class="badge badge-warning">{{remedialofferingshislength || 0}}</span>
+            <table class="table table-sm table-hover">
+              <tr *ngFor="let a of remedialofferingshis">
+                <td>{{a.REMEDIALOFFERINGS}}</td>
+                <td>{{a.OWNER}}</td>
+                <td>{{a.DATEUPDATED | date}}</td>
+              </tr>
+            </table>
+
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+          <ng-template ngbTabTitle> Changes
+
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,68 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Customer proposal</h3>
+  </div>
+  <div class="panel-body" style="height:500px">
+    <div class="row">
+    <div class="col-sm-6">
+      <form #customerproposalcommentForm="ngForm" (ngSubmit)="onSubmit(customerproposalcommentForm)">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="customerproposalcomment">Summary Comment:</label>
+            <textarea class="form-control" rows="8" name="customerproposalcomment" id="customerproposalcomment" #customerproposalcomment="ngModel"
+                      [(ngModel)]="model.customerproposalcomment" required></textarea>
+            <div class="validation-error" *ngIf="customerproposalcomment.invalid && customerproposalcomment.touched">Comment is required</div>
+          </div>
+          <!---->
+        </div>
+        <div class="form-row">
+          <button [disabled]="!customerproposalcommentForm.valid || !customerproposalcommentForm.dirty" class="mr-1 btn btn-success btn-block" type="submit">
+            <i class="fa fa-save"></i> Submit</button>
+        </div>
+      </form>
+      <hr>
+      <input type="file" name="photo" ng2FileSelect [uploader]="uploader"  />
+
+      <button type="button" class="btn btn-success btn-sm" (click)="upload()" [disabled]="!uploader.getNotUploadedItems().length">
+        <i class="fa fa-upload"></i> Upload a file
+      </button>
+    </div>
+    <div class="col-sm-6">
+
+      <ngb-tabset>
+        <ngb-tab>
+          <ng-template  ngbTabTitle> History <span class="badge badge-warning">{{customerproposalhislength || 0}}</span>
+            <table class="table table-sm table-hover">
+              <tr *ngFor="let c of customerproposalhis">
+                <td>{{c.CUSTOMERPROPOSAL}}</td>
+                <td>{{c.OWNER}}</td>
+                <td>{{c.DATEUPDATED | date}}</td>
+              </tr>
+            </table>
+          </ng-template>
+        </ngb-tab>
+
+        <ngb-tab>
+          <ng-template ngbTabTitle>Files <span class="badge badge-warning">{{customerproposalFileslength || 0}}</span>
+
+            <table class="table table-sm table-hover">
+              <tr *ngFor="let f of customerproposalFiles">
+                <td>{{f.FILENAME}}</td>
+                <td>{{f.COLOFFICER}}</td>
+                <td>{{f.STAGEDATE | date}}</td>
+                <td>
+                  <button class="btn btn-success btn-sm" (click)="downloadFile(f.FILENAME, f.DESTPATH)">
+                    <i class="fa fa-download"></i> Download
+                  </button>
+                </td>
+              </tr>
+            </table>
+
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+    </div>
+  </div>
+</div>
+</div>

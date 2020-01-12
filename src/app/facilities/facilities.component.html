@@ -1,0 +1,81 @@
+<div class="card card-default">
+<div class="card-body">
+<p><b>Loans and ODs</b></p>
+<table  class="table table-striped">
+
+  <thead>
+  <tr>
+    <th>accnumber</th>
+    <th>custnumber</th>
+    <th>productcode</th>
+    <th>arocode</th>
+    <th>balance</th>
+    <th>colofficer</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  <tr  *ngFor="let f of facilitiesList">
+
+    <td>{{f.ACCNUMBER}}</td>
+    <td>{{f.CUSTNUMBER}}</td>
+    <td>{{f.PRODUCTCODE}}</td>
+    <td>{{f.AROCODE}}</td>
+    <td>{{f.OUTSBALANCE}}</td>
+    <td>{{f.COLOFFICER}}</td>
+<!--    <div *ngIf="facilitiesLength == 0">Oops, no record found!</div>-->
+  </tr>
+  </tbody>
+
+</table>
+<hr>
+<p><b>Credit cards</b></p>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>acount no</th>
+    <th>card acct</th>
+    <th>card no</th>
+    <th>card name</th>
+    <th>cycle</th>
+    <th>outbalance</th>
+    <th>age in months</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let c of creditcrdList">
+    <td>{{c.ACCOUNTNO}}</td>
+    <td>{{c.CARDACCT}}</td>
+    <td>{{c.CARDNUMBER}}</td>
+    <td>{{c.CARDNAME}}</td>
+    <td>{{c.CYCLE}}</td>
+    <td>{{c.OUTBALANCE}}</td>
+    <td>{{c.AGEINMONTHS}}</td>
+  </tr>
+  </tbody>
+</table>
+<hr>
+<p><b>Mcoop-cash</b></p>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>loanaccnumber</th>
+    <th>phonenumber</th>
+    <th>loan type</th>
+    <th>loan amount</th>
+    <th>status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let m of mcoopcashList">
+    <td>{{m.LOANACCNUMBER}}</td>
+    <td>{{m.PHONENUMBER}}</td>
+    <td>{{m.LOAN_TYPE}}</td>
+    <td>{{m.LOANAMOUNT}}</td>
+    <td>{{m.LOANSTATUS}}</td>
+  </tr>
+  </tbody>
+</table>
+
+</div>
+</div>

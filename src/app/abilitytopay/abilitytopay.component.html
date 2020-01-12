@@ -1,0 +1,52 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Ability to pay</h3>
+  </div>
+  <div class="panel-body" style="height:500px">
+    <div class="row">
+    <div class="col-sm-6">
+      <form #abilitytopayForm="ngForm" (ngSubmit)="onSubmit(abilitytopayForm.value)">
+        <div class="form-group col-md-12">
+          <label for="abilitytopay"></label>
+          <select id="abilitytopay" class="form-control" name="abilitytopay" #abilitytopay="ngModel" [(ngModel)]="model.abilitytopay"
+                  (change)="onChange($event.target.value)" required>
+            <option>able and willing</option>
+            <option>unable and willing</option>
+            <option>unwilling and able</option>
+            <option>unwilling and unable</option>
+          </select>
+          <div class="validation-error" *ngIf="abilitytopay.invalid && abilitytopay.touched">ability to pay is required</div>
+        </div>
+        <!---->
+        <div class="form-row">
+          <button [disabled]="!abilitytopayForm.valid || !abilitytopay.dirty || mydisable" class="mr-1 btn btn-success btn-block" type="submit">
+            <i class="fa fa-save"></i> Submit</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-6">
+      <ngb-tabset>
+        <ngb-tab>
+          <ng-template  ngbTabTitle> History <span class="badge badge-warning">{{abilitytopayhislength || 0}}</span>
+            <table class="table table-sm table-hover">
+              <tr *ngFor="let a of abilitytopayhis">
+                <td>{{a.ABILITYTOPAY}}</td>
+                <td>{{a.OWNER}}</td>
+                <td>{{a.DATEUPDATED | date}}</td>
+              </tr>
+            </table>
+
+
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+          <ng-template ngbTabTitle> Changes
+
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+    </div>
+  </div>
+</div>
+</div>

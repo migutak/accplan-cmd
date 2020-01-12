@@ -1,0 +1,77 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">SWOT analysis</h3>
+  </div>
+  <div class="panel-body" style="height:700px">
+    <div class="row">
+    <div class="col-sm-6">
+      <form #swotForm="ngForm" (ngSubmit)="onSubmit(swotForm)">
+        <div class="form-group row">
+          <label for="strengths" class="col-sm-2 col-form-label">Strengths</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" rows="3" id="strengths" name="strengths" #strengths="ngModel"
+                      [(ngModel)]="model.strengths" (change)="onChange($event.target.value)" required></textarea>
+          </div>
+          <div class="validation-error" *ngIf="strengths.invalid && strengths.touched">strength is required</div>
+        </div>
+        <div class="form-group row">
+          <label for="weaknesses" class="col-sm-2 col-form-label">Weaknesses</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" rows="3" id="weaknesses" name="weaknesses" #weaknesses="ngModel"
+                      [(ngModel)]="model.weaknesses" (change)="onChange($event.target.value)" required></textarea>
+          </div>
+          <div class="validation-error" *ngIf="weaknesses.invalid && weaknesses.touched">weaknesses is required</div>
+        </div>
+        <div class="form-group row">
+          <label for="opportunities" class="col-sm-2 col-form-label">Opportunities</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" rows="3" id="opportunities" name="opportunities" #opportunities="ngModel"
+                      [(ngModel)]="model.opportunities" (change)="onChange($event.target.value)" required></textarea>
+          </div>
+          <div class="validation-error" *ngIf="opportunities.invalid && opportunities.touched">opportunities is required</div>
+        </div>
+        <div class="form-group row">
+          <label for="threats" class="col-sm-2 col-form-label">Threats</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" rows="3" id="threats" name="threats" #threats="ngModel"
+                      [(ngModel)]="model.threats" (change)="onChange($event.target.value)" required></textarea>
+          </div>
+          <div class="validation-error" *ngIf="threats.invalid && threats.touched">threats is required</div>
+        </div>
+        <button [disabled]="!swotForm.valid || !swotForm.dirty || swotForm.submitted" class="mr-1 btn btn-success btn-block"
+                type="submit">
+          <i class="fa fa-save"></i> Submit</button>
+      </form>
+    </div>
+    <div class="col-sm-6">
+
+      <ngb-tabset>
+        <ngb-tab>
+          <ng-template  ngbTabTitle> History
+            <table class="table table-sm table-hover">
+              <tr *ngFor="let s of swothis">
+                <td>
+                  <p>strengths: {{s.STRENGTHS}}</p>
+                  <p>weaknesses: {{s.WEAKNESSES}}</p>
+                  <p>opportunities: {{s.OPPORTUNITIES}}</p>
+                  <p>threats: {{s.THREATS}}</p>
+                </td>
+                <td>{{s.OWNER}}</td>
+                <td>{{s.DATEUPDATED | date}}</td>
+              </tr>
+            </table>
+
+          </ng-template>
+        </ngb-tab>
+
+        <ngb-tab>
+          <ng-template ngbTabTitle> Changes
+
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+    </div>
+  </div>
+</div>
+</div>
