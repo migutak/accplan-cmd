@@ -5,13 +5,14 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FileUploadModule } from 'ng2-file-upload';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
 import { CoreModule } from './core/core.module';
 import { LayoutModule } from './layout/layout.module';
 import { SharedModule } from './shared/shared.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FacilitiesComponent } from './facilities/facilities.component';
 import { BackgroundComponent } from './background/background.component';
 import { ProblemdefinitionComponent } from './problemdefinition/problemdefinition.component';
@@ -46,10 +47,10 @@ export function createTranslateLoader(http: HttpClient) {
         BrowserAnimationsModule, // required for ng2-tag-input
         CoreModule,
         LayoutModule,
-      NgbModule,
-      FileUploadModule,
+        NgbModule,
+        FileUploadModule,
         SharedModule.forRoot(),
-        // RoutesModule,
+        RouterModule.forRoot([]),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -59,6 +60,9 @@ export function createTranslateLoader(http: HttpClient) {
         })
     ],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    exports: [
+        // RouterModule.forRootroue(routes),
+    ]
 })
 export class AppModule { }
