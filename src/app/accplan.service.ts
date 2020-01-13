@@ -30,82 +30,82 @@ export class AccplanService {
   downloadFile(file: string) {
     const body = {filename: file};
 
-    return this.httpClient.post(environment.uploadurl + '/download', body, {
+    return this.httpClient.post(environment.uploadurl + '/filesapi/download', body, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type' , 'application/json')
     });
   }
 
   submitBackground(body) {
-    return this.httpClient.post(environment.uploadurl + '/api/background', body);
+    return this.httpClient.post(environment.ecol_apis_host + '/api/plan_background', body);
   }
 
   submitProblemdefinition(body) {
-    return this.httpClient.post(environment.uploadurl + '/api/problemdefinition', body);
+    return this.httpClient.post(environment.ecol_apis_host + '/api/plan_problemdefinition', body);
   }
 
   submitCustomerproposal(body) {
-    return this.httpClient.post(environment.uploadurl + '/api/customerproposal', body);
+    return this.httpClient.post(environment.ecol_apis_host + '/api/plan_customerproposals', body);
   }
 
   submitAbilitytopay(body) {
-    return this.httpClient.post(environment.uploadurl + '/api/abilitytopay', body);
+    return this.httpClient.post(environment.ecol_apis_host + '/api/plan_ability', body);
   }
 
   submitRemedialoffering(body) {
-    return this.httpClient.post(environment.uploadurl + '/api/remedialofferings', body);
+    return this.httpClient.post(environment.ecol_apis_host + '/api/plan_remedialofferings', body);
   }
 
   submitSwot(body) {
-    return this.httpClient.post(environment.uploadurl + '/api/swot', body);
+    return this.httpClient.post(environment.ecol_apis_host + '/api/plan_swot', body);
   }
 
   submitPtp(body) {
-    return this.httpClient.post(environment.uploadurl + '/api/paymentplans', body);
+    return this.httpClient.post(environment.ecol_apis_host + '/api/plan_ptpplans', body);
   }
 
   getBackground(custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/accplans/background/' + custnumber);
+    return this.httpClient.get(environment.ecol_apis_host + '/api/plan_background?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
   }
 
   getProblemdefinition(custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/accplans/problemdefinition/' + custnumber);
+    return this.httpClient.get(environment.ecol_apis_host + '/api/plan_problemdefinition?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
   }
 
   getCustomerproposal(custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/accplans/customerproposals/' + custnumber);
+    return this.httpClient.get(environment.ecol_apis_host + '/api/plan_customerproposals?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
   }
 
   getabilitytopay(custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/accplans/abilitytopay/' + custnumber);
+    return this.httpClient.get(environment.ecol_apis_host + '/api/plan_ability?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
   }
 
   getSwot(custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/accplans/swot/' + custnumber);
+    return this.httpClient.get(environment.ecol_apis_host + '/api/plan_swot?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
   }
 
   getPtps(custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/accplans/paymentplans/' + custnumber);
+    return this.httpClient.get(environment.ecol_apis_host + '/api/plan_ptpplans?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
   }
 
   getRemedialofferings(custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/accplans/remedialofferings/' + custnumber);
+    return this.httpClient.get(environment.ecol_apis_host + '/api/plan_remedialofferings?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
   }
 
   saveuploadtodb(fileuploaded) {
-    return this.httpClient.post(environment.uploadurl + '/api/uploadssavetodb', fileuploaded);
+    return this.httpClient.post(environment.ecol_apis_host + '/api/uploads', fileuploaded);
   }
 
   getCardwithid (nationid) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/status/cardswithnationid/' + nationid);
+    return this.httpClient.get(environment.ecol_apis_host + '/api/cards_stage?filter[where][nationid]=' + nationid);
   }
 
   getMcoopwithid (nationid) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/status/mcoopwithnationid/' + nationid);
+    return this.httpClient.get(environment.ecol_apis_host + '/api/MCOOPCASH_STAGE?filter[where][idnumber]=' + nationid);
   }
 
   getFacilities (custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/v2/views/' + custnumber);
+    return this.httpClient.get(environment.ecol_apis_host + '/api/watch_stage?filter[where][custnumber]=' + custnumber);
   }
 
   getCustomer (accnumber) {
@@ -115,6 +115,6 @@ export class AccplanService {
   // actions
   submitInitiation(body) {
     console.log('data to save', body);
-    return this.httpClient.post(environment.uploadurl + '/api/initiation', body);
+    return this.httpClient.post(environment.ecol_apis_host + '/api/plan_actions', body);
   }
 }

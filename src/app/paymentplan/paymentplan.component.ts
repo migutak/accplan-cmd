@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert';
 import { AccplanService } from '../accplan.service';
-
+import { ActivatedRoute, Params } from '@angular/router';
 import { environment } from '../../environments/environment';
 
-const cust = localStorage.getItem('custnumber');
-const acc = localStorage.getItem('accnumber');
-const username = localStorage.getItem('username');
+
 
 @Component({
   selector: 'app-paymentplan',
@@ -17,6 +15,9 @@ export class PaymentplanComponent implements OnInit {
 
   minDate: Date;
   maxDate: Date;
+  cust: string;
+  acc: string;
+  username: any;
 
   ptphis: any;
   result: any;
@@ -28,11 +29,19 @@ export class PaymentplanComponent implements OnInit {
     ptpenddate: null
   };
 
-  constructor(private accplanService: AccplanService) {
+  constructor(private accplanService: AccplanService,
+    private route: ActivatedRoute) {
     this.minDate = new Date();
     this.maxDate = new Date();
     this.minDate.setDate(this.minDate.getDate());
     this.maxDate.setDate(this.maxDate.getDate() + 7);
+
+    this.route.queryParams.subscribe(
+      (queryparams: Params) => {
+        this.username = queryparams.username;
+        this.cust = queryparams.custnumber;
+        this.acc = queryparams.accnumber;
+      });
   }
 
   ngOnInit() {
@@ -42,20 +51,20 @@ export class PaymentplanComponent implements OnInit {
   onSubmit(form) {
     // console.log(form);
     const body = {
-      planid: cust,
-      accnumber: acc,
-      custnumber: cust,
-      planfreq: form.value.planfreq,
+      planid: this.cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
+      ptpfreq: form.value.planfreq,
       ptpamount: form.value.ptpamount,
       no_of_frequency: form.value.no_of_frequency,
       ptpstartdate: form.value.ptpstartdate + 1,
       ptpenddate: form.value.ptpenddate + 1,
-      owner: username
+      owner: this.username
     };
 
     this.accplanService.submitPtp(body).subscribe(data => {
       this.result = data;
-      if (this.result.result === 'OK') {
+      if (this.result.id) {
         swal('Successful!', 'saved successfully!', 'success');
         this.getNotes();
       } else {
@@ -69,7 +78,7 @@ export class PaymentplanComponent implements OnInit {
   }
 
   getNotes() {
-    this.accplanService.getPtps(cust).subscribe(data => {
+    this.accplanService.getPtps(this.cust).subscribe(data => {
       // console.log(data);
       this.ptphis = data;
     }, error => {

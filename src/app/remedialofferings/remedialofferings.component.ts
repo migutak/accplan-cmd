@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { AccplanService } from '../accplan.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
-const cust = localStorage.getItem('custnumber');
-const acc = localStorage.getItem('accnumber');
-const username = localStorage.getItem('username');
 
 @Component({
   selector: 'app-remedialofferings',
@@ -13,7 +11,20 @@ const username = localStorage.getItem('username');
 })
 export class RemedialofferingsComponent implements OnInit {
 
-  constructor(private accplanService: AccplanService) { }
+  cust: string;
+acc:string;
+username: any;
+
+  constructor(
+    private accplanService: AccplanService,
+    private route: ActivatedRoute,) {
+    this.route.queryParams.subscribe(
+      (queryparams: Params) => {
+        this.username = queryparams.username;
+        this.cust = queryparams.custnumber;
+        this.acc = queryparams.accnumber;
+      });
+  }
 
   remedialofferingshis: any;
   remedialofferingshislength: number;
@@ -27,15 +38,15 @@ export class RemedialofferingsComponent implements OnInit {
   onSubmit(form) {
     this.accplanService.loader();
     const body = {
-      planid: cust,
-      accnumber: acc,
-      custnumber: cust,
+      planid: this.cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
       remedialofferings: form.value.remedialofferings,
-      owner: username
+      owner: this.username,
+      dateupdated: new Date()
     };
 
     this.accplanService.submitRemedialoffering(body).subscribe(data => {
-      // console.log(data);
       swal.fire('Successful!', 'saved successfully!', 'success');
       this.getNotes();
       this.mydisable = true;
@@ -46,12 +57,12 @@ export class RemedialofferingsComponent implements OnInit {
   }
 
   getNotes() {
-    this.accplanService.getRemedialofferings(cust).subscribe(data => {
+    this.accplanService.getRemedialofferings(this.cust).subscribe(data => {
       this.remedialofferingshis = data;
       if (this.remedialofferingshis.length > 0) {
         this.remedialofferingshislength = this.remedialofferingshis.length;
-        this.model.remedialofferings = data[0].REMEDIALOFFERINGS;
-        this.model.currentremedialofferings = data[0].REMEDIALOFFERINGS;
+        this.model.remedialofferings = data[0].remedialofferings;
+        this.model.currentremedialofferings = data[0].remedialofferings;
       }
     }, error => {
       console.log(error);

@@ -39,21 +39,19 @@
     <div class="col-sm-6">
 
       <ngb-tabset>
-        <ngb-tab>
-          <ng-template  ngbTabTitle> History <span class="badge badge-warning">{{remedialofferingshislength || 0}}</span>
+        <ngb-tab id="tab-1">
+          <ng-template ngbTabTitle>
+            <b>History </b> <span class="badge badge-warning">{{remedialofferingshislength || 0}}</span>
+          </ng-template>
+
+          <ng-template ngbTabContent>
             <table class="table table-sm table-hover">
               <tr *ngFor="let a of remedialofferingshis">
-                <td>{{a.REMEDIALOFFERINGS}}</td>
-                <td>{{a.OWNER}}</td>
-                <td>{{a.DATEUPDATED | date}}</td>
+                <td>{{a.remedialofferings}}</td>
+                <td>{{a.owner}}</td>
+                <td>{{a.dateupdated}}</td>
               </tr>
             </table>
-
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab>
-          <ng-template ngbTabTitle> Changes
-
           </ng-template>
         </ngb-tab>
       </ngb-tabset>

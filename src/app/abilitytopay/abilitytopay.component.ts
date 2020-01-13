@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { AccplanService } from '../accplan.service';
-
-const cust = localStorage.getItem('custnumber');
-const acc = localStorage.getItem('accnumber');
-const username = localStorage.getItem('username');
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-abilitytopay',
@@ -13,7 +10,19 @@ const username = localStorage.getItem('username');
 })
 export class AbilitytopayComponent implements OnInit {
 
-  constructor(public accplanService: AccplanService) {
+  cust: string;
+  acc: string;
+  username: any;
+
+  constructor(
+    private accplanService: AccplanService,
+    private route: ActivatedRoute, ) {
+    this.route.queryParams.subscribe(
+      (queryparams: Params) => {
+        this.username = queryparams.username;
+        this.cust = queryparams.custnumber;
+        this.acc = queryparams.accnumber;
+      });
   }
 
   abilitytopayhis: any;
@@ -28,11 +37,12 @@ export class AbilitytopayComponent implements OnInit {
   onSubmit(form) {
     this.accplanService.loader();
     const body = {
-      planid: cust,
-      accnumber: acc,
-      custnumber: cust,
+      planid: this.cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
       abilitytopay: form.abilitytopay,
-      owner: username
+      owner: this.username,
+      dateupdated: new Date()
     };
 
     this.accplanService.submitAbilitytopay(body).subscribe(data => {
@@ -47,12 +57,12 @@ export class AbilitytopayComponent implements OnInit {
   }
 
   getNotes() {
-    this.accplanService.getabilitytopay(cust).subscribe(data => {
+    this.accplanService.getabilitytopay(this.cust).subscribe(data => {
       this.abilitytopayhis = data;
       if (this.abilitytopayhis.length > 0) {
         this.abilitytopayhislength = this.abilitytopayhis.length;
-        this.model.abilitytopay = data[0].ABILITYTOPAY;
-        this.model.currentabilitytopay = data[0].ABILITYTOPAY;
+        this.model.abilitytopay = data[0].abilitytopay;
+        this.model.currentabilitytopay = data[0].abilitytopay;
       }
     }, error => {
       console.log(error);

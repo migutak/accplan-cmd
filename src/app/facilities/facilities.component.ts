@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AccplanService } from '../accplan.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-facilities',
@@ -9,29 +10,46 @@ import { AccplanService } from '../accplan.service';
   styleUrls: ['./facilities.component.scss']
 })
 export class FacilitiesComponent implements OnInit {
+  custnumber: string;
+  accnumber:string;
+  nationid: string;
+  username: string;
 
-  constructor(private httpClient: HttpClient, private accplanService: AccplanService) { }
+  constructor(private httpClient: HttpClient,
+    private accplanService: AccplanService,
+    private route: ActivatedRoute) { 
+    this.route.queryParams.subscribe(
+      (queryparams: Params) => {
+        console.log(queryparams);
+        this.username = queryparams.username;
+        this.custnumber = queryparams.custnumber;
+        this.accnumber = queryparams.accnumber;
+        this.nationid = queryparams.nationid;
 
-  custnumber = localStorage.getItem('custnumber');
-  accnumber = localStorage.getItem('accnumber');
-  nationid = localStorage.getItem('nationid');
+        if(this.custnumber) {
+          this.getFacilitiesList();
+        this.getCards();
+        this.getMcoopCash();
+        }
+        
+      });
+  }
 
-  url = environment.ecol_apis_host + '/api/v2/views/' + this.custnumber;
+  
+
+  url = environment.ecol_apis_host + '/api/watch_stage?filter[where][custnumber]=' + this.custnumber;
   facilitiesList: any;
   facilitiesLength: number;
   creditcrdList: any = [];
   mcoopcashList: any = [];
 
   ngOnInit() {
-    this.getFacilitiesList();
-    this.getCards();
-    this.getMcoopCash();
+    
   }
 
   // lst employees
   getFacilitiesList() {
     this.accplanService.getFacilities(this.custnumber).subscribe(data => {
-      console.log(data);
       this.facilitiesList = data;
     }, error => {
       // error

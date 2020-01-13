@@ -4,13 +4,10 @@ import swal from 'sweetalert2';
 import { saveAs} from 'file-saver';
 import { AccplanService } from '../accplan.service';
 import { HttpClient } from '@angular/common/http';
-
+import { ActivatedRoute, Params } from '@angular/router';
 import { environment } from '../../environments/environment';
 
-const URL = environment.uploadurl + '/api/upload';
-const cust = localStorage.getItem('custnumber');
-const acc = localStorage.getItem('accnumber');
-const username = localStorage.getItem('username');
+const URL = environment.uploadurl + '/filesapi';
 
 @Component({
   selector: 'app-problemdefinition',
@@ -19,7 +16,20 @@ const username = localStorage.getItem('username');
 })
 export class ProblemdefinitionComponent implements OnInit {
 
-  constructor(private httpClient: HttpClient, private accplanService: AccplanService) { }
+cust: string;
+acc:string;
+username: any;
+
+  constructor(private httpClient: HttpClient,
+    private accplanService: AccplanService,
+    private route: ActivatedRoute,) {
+    this.route.queryParams.subscribe(
+      (queryparams: Params) => {
+        this.username = queryparams.username;
+        this.cust = queryparams.custnumber;
+        this.acc = queryparams.accnumber;
+      });
+  }
 
   fileuploaded = {
     custnumber: null,
@@ -58,12 +68,12 @@ export class ProblemdefinitionComponent implements OnInit {
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       if (response) {
         const filereceived = JSON.parse(response);
-        this.fileuploaded.filename = filereceived.file.originalname;
-        this.fileuploaded.destpath = environment.fileLocation + filereceived.file.path;
-        this.fileuploaded.filesize = filereceived.file.size;
-        this.fileuploaded.custnumber = cust;
-        this.fileuploaded.accnumber = acc;
-        this.fileuploaded.colofficer = username;
+        this.fileuploaded.filename = filereceived.files[0].originalname;
+        this.fileuploaded.destpath = filereceived.files[0].path;
+        this.fileuploaded.filesize = filereceived.files[0].size;
+        this.fileuploaded.custnumber = this.cust;
+        this.fileuploaded.accnumber = this.acc;
+        this.fileuploaded.colofficer = this.username;
         this.fileuploaded.doctype = 'accplan_problemdefinition_file';
         //
         this.accplanService.saveuploadtodb(this.fileuploaded).subscribe(data => {
@@ -79,7 +89,7 @@ export class ProblemdefinitionComponent implements OnInit {
   }
 
   getUploads() {
-    this.httpClient.get(environment.ecol_apis_host + '/api/status/files/' + cust + '/accplan_problemdefinition_file').subscribe(data => {
+    this.httpClient.get(environment.ecol_apis_host + '/api/uploads?filter[where][custnumber]=' + this.cust + '&filter[where][doctype]=accplan_problemdefinition_file').subscribe(data => {
       this.problemdefinitionFiles = data;
       this.problemdefinitionFileslength = this.problemdefinitionFiles.length;
       // console.log(data);
@@ -89,7 +99,7 @@ export class ProblemdefinitionComponent implements OnInit {
   }
 
   getNotes() {
-    this.accplanService.getProblemdefinition(cust).subscribe(data => {
+    this.accplanService.getProblemdefinition(this.cust).subscribe(data => {
       this.problemdefinitionhis = data;
       this.problemdefinitionhislength = this.problemdefinitionhis.length;
     }, error => {
@@ -109,15 +119,14 @@ export class ProblemdefinitionComponent implements OnInit {
   onSubmit(form) {
     this.accplanService.loader();
     const body = {
-      planid: cust,
-      accnumber: acc,
-      custnumber: cust,
+      planid: this.cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
       problemdefinition: form.value.problemdefinitioncomment,
-      owner: username
+      owner: this.username
     };
 
     this.accplanService.submitProblemdefinition(body).subscribe(data => {
-      console.log(data);
       swal.fire('Successful!', 'saved successfully!', 'success');
       this.model.problemdefinitioncomment = '';
       this.getNotes();

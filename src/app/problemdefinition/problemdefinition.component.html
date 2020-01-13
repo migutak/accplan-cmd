@@ -31,28 +31,33 @@
     <div class="col-sm-6">
 
       <ngb-tabset>
-        <ngb-tab>
-          <ng-template  ngbTabTitle> History
-            <span class="badge badge-warning">{{problemdefinitionhislength || 0}}</span>
+        <ngb-tab id="tab-1">
+          <ng-template ngbTabTitle>
+            <b>History </b> <span class="badge badge-warning">{{problemdefinitionhislength || 0}}</span>
+          </ng-template>
+
+          <ng-template ngbTabContent>
             <table class="table table-sm table-hover">
               <tr *ngFor="let p of problemdefinitionhis">
-                <td>{{p.PROBLEMDEFINITION}}</td>
-                <td>{{p.OWNER}}</td>
-                <td>{{p.DATEUPDATED | date}}</td>
+                <td>{{p.problemdefinition}}</td>
+                <td>{{p.owner}}</td>
+                <td>{{p.dateupdated}}</td>
               </tr>
             </table>
           </ng-template>
         </ngb-tab>
 
-        <ngb-tab>
-          <ng-template ngbTabTitle> Files
-            <span class="badge badge-warning">{{problemdefinitionFileslength || 0}}</span>
+        <ngb-tab id="tab-2">
+          <ng-template ngbTabTitle>
+            Files <span class="badge badge-warning">{{problemdefinitionFileslength || 0}}</span>
+          </ng-template>
 
+          <ng-template ngbTabContent>
             <table class="table table-sm table-hover">
               <tr *ngFor="let f of problemdefinitionFiles">
-                <td>{{f.FILENAME}}</td>
-                <td>{{f.COLOFFICER}}</td>
-                <td>{{f.STAGEDATE | date}}</td>
+                <td>{{f.filaename}}</td>
+                <td>{{f.colofficer}}</td>
+                <td>{{f.stagedate}}</td>
                 <td>
                   <button class="btn btn-success btn-sm" (click)="downloadFile(f.FILENAME, f.DESTPATH)">
                     <i class="fa fa-download"></i> Download
@@ -60,7 +65,6 @@
                 </td>
               </tr>
             </table>
-
           </ng-template>
         </ngb-tab>
       </ngb-tabset>

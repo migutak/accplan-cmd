@@ -4,13 +4,10 @@ import swal from 'sweetalert2';
 import { saveAs } from 'file-saver';
 import { AccplanService } from '../accplan.service';
 import { HttpClient } from '@angular/common/http';
-
+import { ActivatedRoute, Params } from '@angular/router';
 import { environment } from '../../environments/environment';
 
-const URL = environment.uploadurl + '/api/upload';
-const cust = localStorage.getItem('custnumber');
-const acc = localStorage.getItem('accnumber');
-const username = localStorage.getItem('username');
+const URL = environment.uploadurl + '/filesapi';
 
 @Component({
   selector: 'app-actions',
@@ -49,11 +46,24 @@ export class ActionsComponent implements OnInit {
     action_completed_cure: null
   };
 
-  constructor(private accplanService: AccplanService, private httpClient: HttpClient) {
+  cust: string;
+acc:string;
+username: any;
+
+  constructor(private accplanService: AccplanService,
+    private httpClient: HttpClient,
+    private route: ActivatedRoute) {
     this.minDate = new Date();
     this.maxDate = new Date();
     this.minDate.setDate(this.minDate.getDate());
     this.maxDate.setDate(this.maxDate.getDate() + 7);
+
+    this.route.queryParams.subscribe(
+      (queryparams: Params) => {
+        this.username = queryparams.username;
+        this.cust = queryparams.custnumber;
+        this.acc = queryparams.accnumber;
+      });
   }
 
   fileuploaded = {
@@ -79,13 +89,13 @@ export class ActionsComponent implements OnInit {
   }
 
   getproposal() {
-    this.httpClient.get(environment.ecol_apis_host + '/api/status/planactions/proposal-received/' + cust).subscribe(data => {
+    this.httpClient.get(environment.ecol_apis_host + '/api/plan_actions?filter[where][actionagreed]=proposal-received&filter[where][custnumber]=' + this.cust).subscribe(data => {
       this.dataproposal = data;
       if (this.dataproposal.length > 0) {
-        this.model.initiationdateProposal = this.dataproposal[0].INITIATIONDATE;
-        this.model.reviewProposal = this.dataproposal[0].NEXTREVIEW;
-        this.model.remarkproposalremark = this.dataproposal[0].RCOMMENT;
-        this.model.inititationcompleted = this.dataproposal[0].COMPLETED;
+        this.model.initiationdateProposal = this.dataproposal[0].initiationdate;
+        this.model.reviewProposal = this.dataproposal[0].nextreview;
+        this.model.remarkproposalremark = this.dataproposal[0].rcomment;
+        this.model.inititationcompleted = this.dataproposal[0].completed;
 
         if (this.model.inititationcompleted === 'Internal-approval-sort') {
           this.internalapproval = false;
@@ -101,13 +111,13 @@ export class ActionsComponent implements OnInit {
   }
 
   fetchinternalapprovals() {
-    this.httpClient.get(environment.ecol_apis_host + '/api/status/planactions/internal-approval/' + cust).subscribe(data => {
+    this.httpClient.get(environment.ecol_apis_host + '/api/plan_actions?filter[where][actionagreed]=internal-approval&filter[where][custnumber]=' + this.cust).subscribe(data => {
       this.dataproposal = data;
       if (this.dataproposal.length > 0) {
-        this.model.initiationdateapprovalsort = this.dataproposal[0].INITIATIONDATE;
-        this.model.reviewedinternalApprovalSort = this.dataproposal[0].NEXTREVIEW;
-        this.model.remarkapprovalsought = this.dataproposal[0].RCOMMENT;
-        this.model.actioncompletedapprovalsought = this.dataproposal[0].COMPLETED;
+        this.model.initiationdateapprovalsort = this.dataproposal[0].initiationdate;
+        this.model.reviewedinternalApprovalSort = this.dataproposal[0].nextreview;
+        this.model.remarkapprovalsought = this.dataproposal[0].rcomment;
+        this.model.actioncompletedapprovalsought = this.dataproposal[0].completed;
 
         //
         if (this.model.actioncompletedapprovalsought === 'Approved') {
@@ -130,13 +140,13 @@ export class ActionsComponent implements OnInit {
   }
 
   fetchcustaccept() {
-    this.httpClient.get(environment.ecol_apis_host + '/api/status/planactions/cust-accept/' + cust).subscribe(data => {
+    this.httpClient.get(environment.ecol_apis_host + '/api/plan_actions?filter[where][actionagreed]=cust-accept&filter[where][custnumber]=' + this.cust).subscribe(data => {
       this.dataproposal = data;
       if (this.dataproposal.length > 0) {
-        this.model.initiationdatecustomeraccepted = this.dataproposal[0].INITIATIONDATE;
-        this.model.reviewedinternalcustomeraccepted = this.dataproposal[0].NEXTREVIEW;
-        this.model.remarkcustomeraccepted = this.dataproposal[0].RCOMMENT;
-        this.model.action_completed_customeraccepted = this.dataproposal[0].COMPLETED;
+        this.model.initiationdatecustomeraccepted = this.dataproposal[0].initiationdate;
+        this.model.reviewedinternalcustomeraccepted = this.dataproposal[0].nextreview;
+        this.model.remarkcustomeraccepted = this.dataproposal[0].rcomment;
+        this.model.action_completed_customeraccepted = this.dataproposal[0].completed;
 
         //
         if (this.model.action_completed_customeraccepted === 'Accepted') {
@@ -157,7 +167,7 @@ export class ActionsComponent implements OnInit {
   }
 
   fetchcure() {
-    this.httpClient.get(environment.ecol_apis_host + '/api/status/planactions/cure-implemented/' + cust).subscribe(data => {
+    this.httpClient.get(environment.ecol_apis_host + '/api/plan_actions?filter[where][actionagreed]=cure-implemented&filter[where][custnumber]=' + this.cust).subscribe(data => {
       this.dataproposal = data;
       if (this.dataproposal.length > 0) {
         this.model.initiationdatecure = this.dataproposal[0].INITIATIONDATE;
@@ -185,12 +195,12 @@ export class ActionsComponent implements OnInit {
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       if (response) {
         const filereceived = JSON.parse(response);
-        this.fileuploaded.filename = filereceived.file.originalname;
-        this.fileuploaded.destpath = environment.fileLocation + filereceived.file.path;
-        this.fileuploaded.filesize = filereceived.file.size;
-        this.fileuploaded.custnumber = cust;
-        this.fileuploaded.accnumber = acc;
-        this.fileuploaded.colofficer = username;
+        this.fileuploaded.filename = filereceived.files[0].originalname;
+        this.fileuploaded.destpath = filereceived.files[0].path;
+        this.fileuploaded.filesize = filereceived.files[0].size;
+        this.fileuploaded.custnumber = this.cust;
+        this.fileuploaded.accnumber = this.acc;
+        this.fileuploaded.colofficer = this.username;
         this.fileuploaded.docdesc = desc;
         this.fileuploaded.doctype = 'accplan_action_file';
         //
@@ -207,7 +217,7 @@ export class ActionsComponent implements OnInit {
   }
 
   getUploads() {
-    this.httpClient.get(environment.ecol_apis_host + '/api/status/files/' + cust + '/accplan_action_file').subscribe(data => {
+    this.httpClient.get(environment.ecol_apis_host + '/api/uploads?filter[where][custnumber]=' + this.cust + '&filter[where][doctype]=accplan_action_file').subscribe(data => {
       this.actionfiles = data;
       this.actionfileslength = this.actionfiles.length;
       // console.log(data);
@@ -229,14 +239,14 @@ export class ActionsComponent implements OnInit {
     // console.log(form.value);
     const body = {
       actionagreed: 'internal-approval',
-      accnumber: acc,
-      custnumber: cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
       initiationdate: form.value.initiationdateapprovalsort,
-      reviewdate: form.value.reviewedinternalApprovalSort,
+      nextreview: form.value.reviewedinternalApprovalSort,
       rcomment: form.value.remarkapprovalsought,
       dateupdated: form.value.initiationdateapprovalsort,
       completed: form.value.actioncompletedapprovalsought,
-      owner: username
+      owner: this.username
     };
     // loading
     this.accplanService.loader();
@@ -268,14 +278,14 @@ export class ActionsComponent implements OnInit {
     //  console.log(form.value);
     const body = {
       actionagreed: 'cust-accept',
-      accnumber: acc,
-      custnumber: cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
       initiationdate: form.value.initiationdatecustomeraccepted,
-      reviewdate: form.value.reviewedinternalcustomeraccepted,
+      nextreview: form.value.reviewedinternalcustomeraccepted,
       rcomment: form.value.remarkcustomeraccepted,
       dateupdated: form.value.initiationdatecustomeraccepted,
       completed: form.value.action_completed_customeraccepted,
-      owner: username
+      owner: this.username
     };
     // loading
     this.accplanService.loader();
@@ -302,17 +312,16 @@ export class ActionsComponent implements OnInit {
   }
 
   onSubmitCure(form) {
-    console.log(form.value);
     const body = {
       actionagreed: 'cure-implemented',
-      accnumber: acc,
-      custnumber: cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
       initiationdate: form.value.initiationdatecure,
-      reviewdate: form.value.reviewedcure,
+      nextreview: form.value.reviewedcure,
       rcomment: form.value.remarkcure,
       dateupdated: form.value.initiationdatecure,
       completed: form.value.action_completed_cure,
-      owner: username
+      owner: this.username
     };
     // loading
     this.accplanService.loader();
@@ -326,17 +335,16 @@ export class ActionsComponent implements OnInit {
   }
 
   onSubmitInitiation(form) {
-    // console.log(form.value);
     const body = {
       actionagreed: 'proposal-received',
-      accnumber: acc,
-      custnumber: cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
       initiationdate: form.value.initiationdateProposal,
-      reviewdate: form.value.reviewProposal,
+      nextreview: form.value.reviewProposal,
       rcomment: form.value.remarkproposalremark,
       dateupdated: form.value.initiationdateProposal,
       completed: form.value.inititationcompleted,
-      owner: username
+      owner: this.username
     };
     // loading
     this.accplanService.loader();

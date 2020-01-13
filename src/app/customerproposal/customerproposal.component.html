@@ -30,34 +30,40 @@
     <div class="col-sm-6">
 
       <ngb-tabset>
-        <ngb-tab>
-          <ng-template  ngbTabTitle> History <span class="badge badge-warning">{{customerproposalhislength || 0}}</span>
+        <ngb-tab id="tab-1">
+          <ng-template ngbTabTitle>
+            <b>History </b> <span class="badge badge-warning">{{customerproposalhislength || 0}}</span>
+          </ng-template>
+
+          <ng-template ngbTabContent>
             <table class="table table-sm table-hover">
               <tr *ngFor="let c of customerproposalhis">
-                <td>{{c.CUSTOMERPROPOSAL}}</td>
-                <td>{{c.OWNER}}</td>
-                <td>{{c.DATEUPDATED | date}}</td>
+                <td>{{c.customerproposal}}</td>
+                <td>{{c.owner}}</td>
+                <td>{{c.dateupdated}}</td>
               </tr>
             </table>
           </ng-template>
         </ngb-tab>
 
-        <ngb-tab>
-          <ng-template ngbTabTitle>Files <span class="badge badge-warning">{{customerproposalFileslength || 0}}</span>
+        <ngb-tab id="tab-2">
+          <ng-template ngbTabTitle>
+            Files <span class="badge badge-warning">{{customerproposalFileslength || 0}}</span>
+          </ng-template>
 
+          <ng-template ngbTabContent>
             <table class="table table-sm table-hover">
               <tr *ngFor="let f of customerproposalFiles">
-                <td>{{f.FILENAME}}</td>
-                <td>{{f.COLOFFICER}}</td>
-                <td>{{f.STAGEDATE | date}}</td>
+                <td>{{f.filename}}</td>
+                <td>{{f.colofficer}}</td>
+                <td>{{f.stagedate}}</td>
                 <td>
-                  <button class="btn btn-success btn-sm" (click)="downloadFile(f.FILENAME, f.DESTPATH)">
+                  <button class="btn btn-success btn-sm" (click)="downloadFile(f.filename, f.destpath)">
                     <i class="fa fa-download"></i> Download
                   </button>
                 </td>
               </tr>
             </table>
-
           </ng-template>
         </ngb-tab>
       </ngb-tabset>

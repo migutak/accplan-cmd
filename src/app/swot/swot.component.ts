@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { AccplanService } from '../accplan.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
-const cust = localStorage.getItem('custnumber');
-const acc = localStorage.getItem('accnumber');
-const username = localStorage.getItem('username');
 
 @Component({
   selector: 'app-swot',
@@ -13,7 +11,18 @@ const username = localStorage.getItem('username');
 })
 export class SwotComponent implements OnInit {
 
-  constructor(private accplanService: AccplanService) {
+  cust: string;
+  acc: string;
+  username: any;
+
+  constructor(private accplanService: AccplanService, private route: ActivatedRoute) {
+
+    this.route.queryParams.subscribe(
+      (queryparams: Params) => {
+        this.username = queryparams.username;
+        this.cust = queryparams.custnumber;
+        this.acc = queryparams.accnumber;
+      });
 
   }
 
@@ -29,14 +38,14 @@ export class SwotComponent implements OnInit {
   onSubmit(form) {
     this.accplanService.loader();
     const body = {
-      planid: cust,
-      accnumber: acc,
-      custnumber: cust,
+      planid: this.cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
       strengths: form.value.strengths,
       weaknesses: form.value.weaknesses,
       opportunities: form.value.opportunities,
       threats: form.value.threats,
-      owner: username
+      owner: this.username
     };
 
     this.accplanService.submitSwot(body).subscribe(data => {
@@ -51,7 +60,7 @@ export class SwotComponent implements OnInit {
   }
 
   getNotes() {
-    this.accplanService.getSwot(cust).subscribe(data => {
+    this.accplanService.getSwot(this.cust).subscribe(data => {
       this.swothis = data;
       if (this.swothis.length > 0) {
         this.swothislength = this.swothis.length;

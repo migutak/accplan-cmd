@@ -5,67 +5,74 @@
     </div>
     <div class="panel-body">
       <div class="row">
-      <div class="col-sm-6">
-        <form #backgroundcommentForm="ngForm" (ngSubmit)="onSubmit(backgroundcommentForm)">
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label for="backgroundcomment">Summary Comment:</label>
-              <textarea class="form-control" rows="8" name="backgroundcomment" id="backgroundcomment" #backgroundcomment="ngModel" [(ngModel)]="model.backgroundcomment" required></textarea>
-              <div class="validation-error" *ngIf="backgroundcomment.invalid && backgroundcomment.touched">Background comment is required</div>
-            </div> <!---->
-          </div>
-          <div class="form-row">
-            <button [disabled]="!backgroundcommentForm.valid || !backgroundcommentForm.dirty" class="btn btn-lg btn-block btn-info" type="submit"><i class="fa fa-save"></i> Submit</button>
-          </div>
-        </form>
-        <hr>
-        <input type="file" name="photo" ng2FileSelect [uploader]="uploader" />
+        <div class="col-sm-6">
+          <form #backgroundcommentForm="ngForm" (ngSubmit)="onSubmit(backgroundcommentForm)">
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="backgroundcomment">Summary Comment:</label>
+                <textarea class="form-control" rows="8" name="backgroundcomment" id="backgroundcomment"
+                  #backgroundcomment="ngModel" [(ngModel)]="model.backgroundcomment" required></textarea>
+                <div class="validation-error" *ngIf="backgroundcomment.invalid && backgroundcomment.touched">Background
+                  comment is required</div>
+              </div>
+              <!---->
+            </div>
+            <div class="form-row">
+              <button [disabled]="!backgroundcommentForm.valid || !backgroundcommentForm.dirty"
+                class="btn btn-lg btn-block btn-info" type="submit"><i class="fa fa-save"></i> Submit</button>
+            </div>
+          </form>
+          <hr>
+          <input type="file" name="photo" ng2FileSelect [uploader]="uploader" />
 
 
-        <button type="button" class="btn btn-success btn-sm"
-                (click)="upload()"
-                [disabled]="!uploader.getNotUploadedItems().length" >
-          <i class="fa fa-upload"></i> Upload a file
-        </button>
+          <button type="button" class="btn btn-success btn-sm" (click)="upload()"
+            [disabled]="!uploader.getNotUploadedItems().length">
+            <i class="fa fa-upload"></i> Upload a file
+          </button>
 
-      </div>
-      <div class="col-sm-6">
-        <ngb-tabset>
-          <ngb-tab>
-            <ng-template  ngbTabTitle>History <span class="badge badge-warning">{{backgroundhistorylength || 0}}</span>
+        </div>
+        <div class="col-sm-6">
+          <ngb-tabset>
+            <ngb-tab id="tab-1">
+              <ng-template ngbTabTitle>
+                <b>History </b> <span class="badge badge-warning">{{backgroundhistorylength || 0}}</span>
+              </ng-template>
 
-              <table class="table table-sm table-hover">
-                <tr *ngFor="let b of backgroundhistory">
-                  <td>{{b.BACKGROUND}}</td>
-                  <td>{{b.OWNER}}</td>
-                  <td>{{b.DATEUPDATED | date}}</td>
-                </tr>
-              </table>
+              <ng-template ngbTabContent>
+                <table class="table table-hover">
+                  <tr *ngFor="let b of backgroundhistory">
+                    <td>{{b.background}}</td>
+                    <td>{{b.owner}}</td>
+                    <td>{{b.dateupdated}}</td>
+                  </tr>
+                </table>
+              </ng-template>
+            </ngb-tab>
 
-            </ng-template>
-          </ngb-tab>
+            <ngb-tab id="tab-2">
+              <ng-template ngbTabTitle>
+                Files <span class="badge badge-warning">{{backgroundFileslength || 0}}</span>
+              </ng-template>
 
-          <ngb-tab>
-            <ng-template ngbTabTitle> Files <span class="badge badge-warning">{{backgroundFileslength || 0}}</span>
+              <ng-template ngbTabContent>
+                <table class="table table-sm table-hover">
+                  <tr *ngFor="let f of backgroundFiles">
+                    <td>{{f.filename}}</td>
+                    <td>{{f.colofficer}}</td>
+                    <td>{{f.stagedate}}</td>
+                    <td><button class="btn btn-success btn-sm" (click)="downloadFile(f.filename, f.destpath)">
+                        <i class="fa fa-download"></i> Download
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
 
-              <table class="table table-sm table-hover">
-                <tr *ngFor="let f of backgroundFiles">
-                  <td>{{f.FILENAME}}</td>
-                  <td>{{f.COLOFFICER}}</td>
-                  <td>{{f.STAGEDATE | date}}</td>
-                  <td><button class="btn btn-success btn-sm" (click)="downloadFile(f.FILENAME, f.DESTPATH)">
-                    <i class="fa fa-download"></i> Download
-                  </button>
-                  </td>
-                </tr>
-              </table>
-
-            </ng-template>
-          </ngb-tab>
-        </ngb-tabset>
-
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>

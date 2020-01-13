@@ -7,8 +7,7 @@
 export const environment = {
   production: false,
   ecol_apis_host: 'http://localhost:8000',
-  uploadurl: 'http://localhost:3000',
-  fileLocation: 'C:\\Users\\Kevin\\Documents\\angular2\\upload_node\\'
+  uploadurl: 'http://localhost:3000'
 };
 
 /*

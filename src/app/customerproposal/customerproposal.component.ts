@@ -3,14 +3,12 @@ import {  FileUploader } from 'ng2-file-upload';
 import swal from 'sweetalert2';
 import { saveAs} from 'file-saver';
 import { AccplanService } from '../accplan.service';
+import { ActivatedRoute, Params } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 
-const URL = environment.uploadurl + '/api/upload';
-const cust = localStorage.getItem('custnumber');
-const acc = localStorage.getItem('accnumber');
-const username = localStorage.getItem('username');
+const URL = environment.uploadurl + '/filesapi';
 
 @Component({
   selector: 'app-customerproposal',
@@ -19,7 +17,21 @@ const username = localStorage.getItem('username');
 })
 export class CustomerproposalComponent implements OnInit {
 
-  constructor(private httpClient: HttpClient, private accplanService: AccplanService) { }
+  cust: string;
+  acc: string;
+  username: any;
+
+  constructor(
+    private httpClient: HttpClient,
+    private accplanService: AccplanService,
+    private route: ActivatedRoute, ) {
+    this.route.queryParams.subscribe(
+      (queryparams: Params) => {
+        this.username = queryparams.username;
+        this.cust = queryparams.custnumber;
+        this.acc = queryparams.accnumber;
+      });
+  }
 
   fileuploaded = {
     custnumber: null,
@@ -60,12 +72,12 @@ export class CustomerproposalComponent implements OnInit {
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       if (response) {
         const filereceived = JSON.parse(response);
-        this.fileuploaded.filename = filereceived.file.originalname;
-        this.fileuploaded.destpath = environment.fileLocation + filereceived.file.path;
-        this.fileuploaded.filesize = filereceived.file.size;
-        this.fileuploaded.custnumber = cust;
-        this.fileuploaded.accnumber = acc;
-        this.fileuploaded.colofficer = username;
+        this.fileuploaded.filename = filereceived.files[0].originalname;
+        this.fileuploaded.destpath = filereceived.files[0].path;
+        this.fileuploaded.filesize = filereceived.files[0].size;
+        this.fileuploaded.custnumber = this.cust;
+        this.fileuploaded.accnumber = this.acc;
+        this.fileuploaded.colofficer = this.username;
         this.fileuploaded.doctype = 'accplan_customerproposal_file';
         //
         this.accplanService.saveuploadtodb(this.fileuploaded).subscribe(data => {
@@ -81,7 +93,7 @@ export class CustomerproposalComponent implements OnInit {
   }
 
   getUploads() {
-    this.httpClient.get(environment.ecol_apis_host + '/api/status/files/' + cust + '/accplan_customerproposal_file').subscribe(data => {
+    this.httpClient.get(environment.ecol_apis_host + '/api/uploads?filter[where][custnumber]=' + this.cust + '&filter[where][doctype]=accplan_customerproposal_file').subscribe(data => {
       this.customerproposalFiles = data;
       if (data) {
         this.customerproposalFileslength = this.customerproposalFiles.length;
@@ -93,7 +105,7 @@ export class CustomerproposalComponent implements OnInit {
   }
 
   getNotes() {
-    this.accplanService.getCustomerproposal(cust).subscribe(data => {
+    this.accplanService.getCustomerproposal(this.cust).subscribe(data => {
       this.customerproposalhis = data;
       this.customerproposalhislength = this.customerproposalhis.length;
     }, error => {
@@ -113,15 +125,15 @@ export class CustomerproposalComponent implements OnInit {
   onSubmit(form) {
     this.accplanService.loader();
     const body = {
-      planid: cust,
-      accnumber: acc,
-      custnumber: cust,
+      planid: this.cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
       customerproposal: form.value.customerproposalcomment,
-      owner: username
+      owner: this.username,
+      dateupdated: new Date()
     };
 
     this.accplanService.submitCustomerproposal(body).subscribe(data => {
-      console.log(data);
       swal.fire('Successful!', 'saved successfully!', 'success');
       this.model.customerproposalcomment = '';
       this.getNotes();

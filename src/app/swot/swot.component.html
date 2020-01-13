@@ -46,27 +46,34 @@
     <div class="col-sm-6">
 
       <ngb-tabset>
-        <ngb-tab>
-          <ng-template  ngbTabTitle> History
+        <ngb-tab id="tab-1">
+          <ng-template ngbTabTitle>
+            <b>History</b>
+          </ng-template>
+
+          <ng-template ngbTabContent>
             <table class="table table-sm table-hover">
               <tr *ngFor="let s of swothis">
                 <td>
-                  <p>strengths: {{s.STRENGTHS}}</p>
-                  <p>weaknesses: {{s.WEAKNESSES}}</p>
-                  <p>opportunities: {{s.OPPORTUNITIES}}</p>
-                  <p>threats: {{s.THREATS}}</p>
+                  <p><b>strengths:</b> {{s.strengths}}</p>
+                  <p><b>weaknesses:</b> {{s.weaknesses}}</p>
+                  <p><b>opportunities:</b> {{s.opportunities}}</p>
+                  <p><b>threats:</b> {{s.threats}}</p>
                 </td>
-                <td>{{s.OWNER}}</td>
-                <td>{{s.DATEUPDATED | date}}</td>
+                <td>{{s.owner}}</td>
+                <td>{{s.dateupdated}}</td>
               </tr>
             </table>
-
           </ng-template>
         </ngb-tab>
 
-        <ngb-tab>
-          <ng-template ngbTabTitle> Changes
+        <ngb-tab id="tab-2">
+          <ng-template ngbTabTitle>
+            Changes 
+          </ng-template>
 
+          <ng-template ngbTabContent>
+            
           </ng-template>
         </ngb-tab>
       </ngb-tabset>

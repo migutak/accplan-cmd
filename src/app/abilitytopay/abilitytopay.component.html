@@ -26,22 +26,29 @@
     </div>
     <div class="col-sm-6">
       <ngb-tabset>
-        <ngb-tab>
-          <ng-template  ngbTabTitle> History <span class="badge badge-warning">{{abilitytopayhislength || 0}}</span>
+        <ngb-tab id="tab-1">
+          <ng-template ngbTabTitle>
+            History <span class="badge badge-warning">{{abilitytopayhislength || 0}}</span>
+          </ng-template>
+
+          <ng-template ngbTabContent>
             <table class="table table-sm table-hover">
               <tr *ngFor="let a of abilitytopayhis">
-                <td>{{a.ABILITYTOPAY}}</td>
-                <td>{{a.OWNER}}</td>
-                <td>{{a.DATEUPDATED | date}}</td>
+                <td>{{a.abilitytopay}}</td>
+                <td>{{a.owner}}</td>
+                <td>{{a.dateupdated}}</td>
               </tr>
             </table>
-
-
           </ng-template>
         </ngb-tab>
-        <ngb-tab>
-          <ng-template ngbTabTitle> Changes
 
+        <ngb-tab id="tab-2">
+          <ng-template ngbTabTitle>
+            Changes 
+          </ng-template>
+
+          <ng-template ngbTabContent>
+            chnages will appear here
           </ng-template>
         </ngb-tab>
       </ngb-tabset>

@@ -4,13 +4,12 @@ import swal from 'sweetalert2';
 import { saveAs} from 'file-saver';
 import { AccplanService } from '../accplan.service';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import { environment } from '../../environments/environment';
 
-const URL = environment.uploadurl + '/api/upload';
-const cust = localStorage.getItem('custnumber');
-const acc = localStorage.getItem('accnumber');
-const username = localStorage.getItem('username');
+const URL = environment.uploadurl + '/filesapi';
+
 
 @Component({
   selector: 'app-background',
@@ -19,7 +18,20 @@ const username = localStorage.getItem('username');
 })
 export class BackgroundComponent implements OnInit {
 
-  constructor(private httpClient: HttpClient, private accplanService: AccplanService) { }
+cust: string;
+acc:string;
+username: any;
+
+  constructor(private httpClient: HttpClient,
+    private accplanService: AccplanService,
+    private route: ActivatedRoute,) {
+    this.route.queryParams.subscribe(
+      (queryparams: Params) => {
+        this.username = queryparams.username;
+        this.cust = queryparams.custnumber;
+        this.acc = queryparams.accnumber;
+      });
+  }
 
   fileuploaded = {
     custnumber: null,
@@ -38,6 +50,7 @@ export class BackgroundComponent implements OnInit {
   backgroundFileslength: number;
   backgroundhistorylength: number;
   model: any = {};
+  History = 'History ' + 0;
 
   public uploader: FileUploader = new FileUploader({url: URL, itemAlias: 'photo'});
 
@@ -58,16 +71,15 @@ export class BackgroundComponent implements OnInit {
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       if (response) {
         const filereceived = JSON.parse(response);
-        this.fileuploaded.filename = filereceived.file.originalname;
-        this.fileuploaded.destpath = environment.fileLocation + filereceived.file.path;
-        this.fileuploaded.filesize = filereceived.file.size;
-        this.fileuploaded.custnumber = cust;
-        this.fileuploaded.accnumber = acc;
-        this.fileuploaded.colofficer = username;
+        this.fileuploaded.filename = filereceived.files[0].originalname;
+        this.fileuploaded.destpath = filereceived.files[0].path;//environment.fileLocation + filereceived.files[0].path;
+        this.fileuploaded.filesize = filereceived.files[0].size;
+        this.fileuploaded.custnumber = this.cust;
+        this.fileuploaded.accnumber = this.acc;
+        this.fileuploaded.colofficer = this.username;
         this.fileuploaded.doctype = 'accplan_background_file';
         //
         this.accplanService.saveuploadtodb(this.fileuploaded).subscribe(data => {
-          // console.log(data);
           swal.fire('Upload successful!', this.fileuploaded.filename + ' received!', 'success');
           this.getUploads();
         }, error => {
@@ -79,7 +91,7 @@ export class BackgroundComponent implements OnInit {
   }
 
   getUploads() {
-    this.httpClient.get(environment.ecol_apis_host + '/api/status/files/' + cust + '/accplan_background_file').subscribe(data => {
+    this.httpClient.get(environment.ecol_apis_host + '/api/uploads?filter[where][custnumber]=' + this.cust + '&filter[where][doctype]=accplan_background_file').subscribe(data => {
       this.backgroundFiles = data;
       this.backgroundFileslength = this.backgroundFiles.length;
       // console.log(data);
@@ -89,7 +101,7 @@ export class BackgroundComponent implements OnInit {
   }
 
   getNotes() {
-    this.accplanService.getBackground(cust).subscribe(data => {
+    this.accplanService.getBackground(this.cust).subscribe(data => {
       this.backgroundhistory = data;
       this.backgroundhistorylength = this.backgroundhistory.length;
     }, error => {
@@ -112,11 +124,11 @@ export class BackgroundComponent implements OnInit {
     this.accplanService.loader();
     //
     const body = {
-      planid: cust,
-      accnumber: acc,
-      custnumber: cust,
+      planid: this.cust,
+      accnumber: this.acc,
+      custnumber: this.cust,
       background: form.value.backgroundcomment,
-      owner: username
+      owner: this.username
     };
 
     this.accplanService.submitBackground(body).subscribe(data => {

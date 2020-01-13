@@ -44,7 +44,7 @@
             <label class="control-label col-sm-4" for="ptpstartdate">Start date:</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" id="ptpstartdate" bsDatepicker [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                     placement="left" name="ptpstartdate" #ptpstartdate="ngModel" [(ngModel)]="model.ptpstartdate" required>
+                     placement="right" name="ptpstartdate" #ptpstartdate="ngModel" [(ngModel)]="model.ptpstartdate" required>
             </div>
             <div class="validation-error" *ngIf="ptpstartdate.invalid && ptpstartdate.touched">Start Date is required</div>
           </div>
@@ -52,7 +52,7 @@
             <label class="control-label col-sm-4" for="ptpenddate">End date:</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" id="ptpenddate" bsDatepicker [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                     placement="left" name="ptpenddate" #ptpenddate="ngModel" [(ngModel)]="model.ptpenddate" required>
+                     placement="right" name="ptpenddate" #ptpenddate="ngModel" [(ngModel)]="model.ptpenddate" required>
             </div>
             <div class="validation-error" *ngIf="ptpenddate.invalid && ptpenddate.touched">End Date is required</div>
           </div>
@@ -79,12 +79,12 @@
         </thead>
         <tbody>
         <tr *ngFor="let p of ptphis">
-          <td>{{p.ACCNUMBER}}</td>
-          <td>{{p.PTPAMOUNT}}</td>
-          <td>{{p.PTPSTARTDATE | date}}</td>
-          <td>{{p.PTPFREQ}}</td>
-          <td>{{p.NO_OF_FREQUENCY}}</td>
-          <td>{{p.DATEUPDATED | date}}</td>
+          <td>{{p.accnumber}}</td>
+          <td>{{p.ptpamount}}</td>
+          <td>{{p.ptpstartdate}}</td>
+          <td>{{p.ptpfreq}}</td>
+          <td>{{p.no_of_frequency}}</td>
+          <td>{{p.dateupdated}}</td>
         </tr>
         </tbody>
       </table>
