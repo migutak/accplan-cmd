@@ -64,11 +64,11 @@ export class SwotComponent implements OnInit {
       this.swothis = data;
       if (this.swothis.length > 0) {
         this.swothislength = this.swothis.length;
-        this.model.strengths = data[0].STRENGTHS;
-        this.model.weaknesses = data[0].WEAKNESSES;
-        this.model.opportunities = data[0].OPPORTUNITIES;
-        this.model.threats = data[0].THREATS;
-        this.model.currentstrengths = data[0].STRENGTHS;
+        this.model.strengths = data[0].strengths;
+        this.model.weaknesses = data[0].weaknesses;
+        this.model.opportunities = data[0].opportunities;
+        this.model.threats = data[0].threats;
+        this.model.currentstrengths = data[0].strengths;
       }
     }, error => {
       console.log(error);

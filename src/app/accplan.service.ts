@@ -57,7 +57,7 @@ export class AccplanService {
   }
 
   submitSwot(body) {
-    return this.httpClient.post(environment.ecol_apis_host + '/api/plan_swot', body);
+    return this.httpClient.post(environment.ecol_apis_host + '/api/plan_swot/add', body);
   }
 
   submitPtp(body) {
