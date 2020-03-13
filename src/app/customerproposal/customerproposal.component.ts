@@ -108,6 +108,7 @@ export class CustomerproposalComponent implements OnInit {
     this.accplanService.getCustomerproposal(this.cust).subscribe(data => {
       this.customerproposalhis = data;
       this.customerproposalhislength = this.customerproposalhis.length;
+      this.model.customerproposalcomment=data[0].customerproposal;
     }, error => {
       console.log(error);
     });

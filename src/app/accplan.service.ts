@@ -65,15 +65,15 @@ export class AccplanService {
   }
 
   getBackground(custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/plan_background?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
+    return this.httpClient.get<any>(environment.ecol_apis_host + '/api/plan_background?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
   }
 
   getProblemdefinition(custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/plan_problemdefinition?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
+    return this.httpClient.get<any>(environment.ecol_apis_host + '/api/plan_problemdefinition?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
   }
 
   getCustomerproposal(custnumber) {
-    return this.httpClient.get(environment.ecol_apis_host + '/api/plan_customerproposals?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
+    return this.httpClient.get<any>(environment.ecol_apis_host + '/api/plan_customerproposals?filter[where][custnumber]=' + custnumber + '&filter[order]=dateupdated DESC');
   }
 
   getabilitytopay(custnumber) {
