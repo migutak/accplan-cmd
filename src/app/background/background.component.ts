@@ -104,6 +104,7 @@ username: any;
     this.accplanService.getBackground(this.cust).subscribe(data => {
       this.backgroundhistory = data;
       this.backgroundhistorylength = this.backgroundhistory.length;
+      this.model.backgroundcomment=data[0].background
     }, error => {
       console.log(error);
     });

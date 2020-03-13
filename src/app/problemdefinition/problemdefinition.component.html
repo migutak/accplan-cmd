@@ -44,6 +44,7 @@
                 <td>{{p.dateupdated}}</td>
               </tr>
             </table>
+            
           </ng-template>
         </ngb-tab>
 
@@ -55,11 +56,11 @@
           <ng-template ngbTabContent>
             <table class="table table-sm table-hover">
               <tr *ngFor="let f of problemdefinitionFiles">
-                <td>{{f.filaename}}</td>
+                <td>{{f.filename}}</td>
                 <td>{{f.colofficer}}</td>
                 <td>{{f.stagedate}}</td>
                 <td>
-                  <button class="btn btn-success btn-sm" (click)="downloadFile(f.FILENAME, f.DESTPATH)">
+                  <button class="btn btn-success btn-sm" (click)="downloadFile(f.filename, f.destpath)">
                     <i class="fa fa-download"></i> Download
                   </button>
                 </td>
