@@ -22,6 +22,7 @@ import { CustomerproposalComponent } from './customerproposal/customerproposal.c
 import { PaymentplanComponent } from './paymentplan/paymentplan.component';
 import { RemedialofferingsComponent } from './remedialofferings/remedialofferings.component';
 import { ActionsComponent } from './actions/actions.component';
+import { environment } from '../environments/environment';
 // import { RoutesModule } from './routes/routes.module';
 
 // https://github.com/ocombe/ng2-translate/issues/218
@@ -59,7 +60,10 @@ export function createTranslateLoader(http: HttpClient) {
             }
         })
     ],
-    providers: [],
+    providers: [
+        {provide: 'API_URL', useValue: environment.ecol_apis_host},
+        {provide: 'UPLOAD_URL', useValue: environment.uploadurl}
+    ],
     bootstrap: [AppComponent],
     exports: [
         // RouterModule.forRootroue(routes),
