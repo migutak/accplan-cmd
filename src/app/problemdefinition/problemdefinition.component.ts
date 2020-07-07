@@ -6,7 +6,7 @@ import { AccplanService } from '../accplan.service';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Params } from '@angular/router';
 import { environment } from '../../environments/environment';
-
+import * as moment from 'moment';
 const URL = environment.uploadurl + '/filesapi';
 
 @Component({
@@ -100,8 +100,11 @@ username: any;
 
   getNotes() {
     this.accplanService.getProblemdefinition(this.cust).subscribe(data => {
+      if(data && data.length>0){
       this.problemdefinitionhis = data;
       this.problemdefinitionhislength = this.problemdefinitionhis.length;
+      this.model.problemdefinitioncomment=data[0].problemdefinition;
+      }
     }, error => {
       console.log(error);
     });
@@ -123,12 +126,12 @@ username: any;
       accnumber: this.acc,
       custnumber: this.cust,
       problemdefinition: form.value.problemdefinitioncomment,
-      owner: this.username
+      owner: this.username,
+      dateupdated: moment().format('DD-MMM-YYYY').toUpperCase()
     };
 
     this.accplanService.submitProblemdefinition(body).subscribe(data => {
       swal.fire('Successful!', 'saved successfully!', 'success');
-      this.model.problemdefinitioncomment = '';
       this.getNotes();
     }, error => {
       console.log(error);

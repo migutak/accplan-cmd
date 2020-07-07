@@ -5,7 +5,7 @@ import { saveAs} from 'file-saver';
 import { AccplanService } from '../accplan.service';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Params } from '@angular/router';
-
+import * as moment from 'moment';
 import { environment } from '../../environments/environment';
 
 const URL = environment.uploadurl + '/filesapi';
@@ -102,8 +102,11 @@ username: any;
 
   getNotes() {
     this.accplanService.getBackground(this.cust).subscribe(data => {
+      if(data && data.length>0){
       this.backgroundhistory = data;
       this.backgroundhistorylength = this.backgroundhistory.length;
+      this.model.backgroundcomment=data[0].background;
+      }
     }, error => {
       console.log(error);
     });
@@ -119,8 +122,6 @@ username: any;
   }
 
   onSubmit(form) {
-    // console.log(form.value);
-    // Loading indictor
     this.accplanService.loader();
     //
     const body = {
@@ -128,12 +129,12 @@ username: any;
       accnumber: this.acc,
       custnumber: this.cust,
       background: form.value.backgroundcomment,
-      owner: this.username
+      owner: this.username,
+      dateupdated: moment().format('DD-MMM-YYYY').toUpperCase()
     };
 
     this.accplanService.submitBackground(body).subscribe(data => {
       swal.fire('Successful!', 'saved successfully!', 'success');
-      this.model.backgroundcomment = '';
       this.getNotes();
     }, error => {
       console.log(error);

@@ -20,7 +20,7 @@ export class FacilitiesComponent implements OnInit {
     private route: ActivatedRoute) { 
     this.route.queryParams.subscribe(
       (queryparams: Params) => {
-        console.log(queryparams);
+        //console.log(queryparams);
         this.username = queryparams.username;
         this.custnumber = queryparams.custnumber;
         this.accnumber = queryparams.accnumber;
@@ -50,6 +50,7 @@ export class FacilitiesComponent implements OnInit {
   // lst employees
   getFacilitiesList() {
     this.accplanService.getFacilities(this.custnumber).subscribe(data => {
+      console.log(data)
       this.facilitiesList = data;
     }, error => {
       // error
